@@ -1,0 +1,24 @@
+{
+  "name": "tumblr-pool.js",
+  "version": "0.0.0",
+  "description": "tumblr.js instance pool with metrics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brickflow/tumblr-pool.js.git"
+  },
+  "author": "ifroz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brickflow/tumblr-pool.js/issues"
+  },
+  "homepage": "https://github.com/Brickflow/tumblr-pool.js",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "jstk": "~0.1.7",
+    "tumblr.js": "0.0.4"
+  }
+}
