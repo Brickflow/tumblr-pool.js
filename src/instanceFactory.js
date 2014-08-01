@@ -25,10 +25,9 @@ module.exports = function instanceFactory(params) {
       
       args.push(
         function instanceResponseCallback(err, res) {
-          if (err) {
-            return callback(err);
-          }
           var responseAt = new Date();
+          
+          res = res || {};
           res.logInfo = {
             tumblrKey: self.consumer_key,
             tumblrToken: self.token,
@@ -37,9 +36,11 @@ module.exports = function instanceFactory(params) {
             responseAt: responseAt,
             queryDuration: responseAt - queryAt, // millisec
             queryType: cmd,
+            queryParams: args.slice(0, -1), // w/o the callback
             instanceQueryCount: queryCount,
           }
-          return callback(null, res);
+          
+          return callback(err, res);
         });
       
       self.queryCount++;
