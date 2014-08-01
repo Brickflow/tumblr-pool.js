@@ -48,9 +48,12 @@ var tumblrPoolFactory = function tumblrPoolFactory(firstClientParams) {
       args.push(function instanceCallbackWrapper(err, res) {
         if (self.logger) {
           if (err) {
-            self.logger.error('tumblr-query-error', err); 
+            self.logger.error('tumblr-query-error', {
+              err: err,
+              stack: err.stack,
+              code: err.code); 
           } else {
-            self.logger.info('tumblr-query', res.logInfo); 
+            self.logger.info('tumblr-query-success', res.logInfo); 
           }
         } else {
           console.log('tumblr-pool.js has no logger');
