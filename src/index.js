@@ -51,7 +51,7 @@ var tumblrPoolFactory = function tumblrPoolFactory(firstClientParams) {
             self.logger.error('tumblr-query-error', {
               err: err,
               stack: err.stack,
-              code: err.code); 
+              code: err.code}); 
           } else {
             self.logger.info('tumblr-query-success', res.logInfo); 
           }
