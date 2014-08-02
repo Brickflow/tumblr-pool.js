@@ -1,15 +1,30 @@
 /* jshint camelcase: false */
 'use strict';
-
-var _ = require('jstk').bind(require('lodash'));
-var tumblr = require('tumblr.js');
+var _ = require('lodash');
 var roughSizeOfObject = require('./roughSizeOfObject')
+
+var tumblr = require('tumblr.js');
+tumblr.request(require('./requestWrapper'));
+
+var mainResponseArrayFields = {
+  posts: ['posts', 'tagged', 'dashboard'],
+  users: ['followers'],
+  liked_posts: ['liked_posts']
+}
+function responseArrayByCommand(cmd) {
+  return _.findKey({
+    posts: ['posts', 'tagged', 'dashboard'],
+    users: ['followers'],
+    liked_posts: ['liked_posts']
+  }, function(v) { 
+    return _.contains(v, cmd); 
+  }); 
+}
 
 module.exports = function instanceFactory(params) {
   var tumblrParams = _.pick(params,
-        'consumer_key', 'consumer_secret', 'token', 'token_secret'); 
-        
-        
+        'consumer_key', 'consumer_secret', 'token', 'token_secret',
+        'ip');
   
   var self = {    
     client: new tumblr.Client(tumblrParams),
@@ -28,19 +43,37 @@ module.exports = function instanceFactory(params) {
       args.push(
         function instanceResponseCallback(err, res) {
           var responseAt = new Date();
-                    
+          
           res = res || {};
           res.logInfo = {
+            byteSize: roughSizeOfObject(res),
+            'status': 'success',            
             tumblrKey: self.consumer_key,
             tumblrToken: self.token,
-            byteSize: roughSizeOfObject(res),
+            ip: self.ip,
+            queryType: cmd,
+            queryParams: args.slice(0, -1), // w/o the callback
             queryAt: queryAt,
             responseAt: responseAt,
             queryDuration: responseAt - queryAt, // millisec
-            queryType: cmd,
-            queryParams: args.slice(0, -1), // w/o the callback
-            instanceQueryCount: queryCount,
+          };
+          
+          var responseArrayKey = responseArrayByCommand(cmd);
+          if (responseArrayKey) {
+            if (res[responseArrayKey]) {
+              res.logInfo.responseArrayCount = res[responseArrayKey].length;
+            }
           }
+          
+          if (err) {
+            res.logInfo = _.assign(res.logInfo, {
+              'status': 'error',
+              err: err,
+              stack: err.stack,
+              code: err.code
+            });
+          }
+          
           
           return callback(err, res);
         });

@@ -4,6 +4,7 @@
 var _ = require('jstk').bind(require('lodash'));
 var instanceFactory = require('./instanceFactory');
 var loggerEventName = 'tumblr-query';
+var request = require('request');
 
 var tumblrPoolFactory = function tumblrPoolFactory(firstClientParams) {
   firstClientParams = firstClientParams || {}; 
@@ -51,20 +52,11 @@ var tumblrPoolFactory = function tumblrPoolFactory(firstClientParams) {
       }
       args.push(function instanceCallbackWrapper(err, res) {
         if (self.logger) {
-          if (err) {
-            self.logger.error(loggerEventName, {
-              status: 'error',
-              err: err,
-              stack: err.stack,
-              code: err.code
-            }); 
+          if (err || res.logInfo.status !== 'success') {
+            self.logger.info(loggerEventName, res.logInfo); 
           } else {
-            self.logger.info(loggerEventName, _.assign(res.logInfo, {
-              status: 'success'
-            })); 
+            self.logger.error(loggerEventName, res.logInfo);
           }
-        } else {
-          console.log('tumblr-pool.js has no logger');
         }
         cb(err, res);
       });
