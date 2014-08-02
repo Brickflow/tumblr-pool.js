@@ -19,7 +19,8 @@ t.addClient({
   consumer_secret: '...'
 });
 
+t.posts('blogName', function(err, res) {});
+
 ### TODO
 
-- Should work the exact same way as tumblr.js (createClient at least)
 - Multiple IP addresses (override tumblr.js request object)

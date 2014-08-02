@@ -8,6 +8,8 @@ var roughSizeOfObject = require('./roughSizeOfObject')
 module.exports = function instanceFactory(params) {
   var tumblrParams = _.pick(params,
         'consumer_key', 'consumer_secret', 'token', 'token_secret'); 
+        
+        
   
   var self = {    
     client: new tumblr.Client(tumblrParams),
@@ -26,7 +28,7 @@ module.exports = function instanceFactory(params) {
       args.push(
         function instanceResponseCallback(err, res) {
           var responseAt = new Date();
-          
+                    
           res = res || {};
           res.logInfo = {
             tumblrKey: self.consumer_key,
