@@ -1,6 +1,6 @@
 {
   "name": "tumblr-pool.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "tumblr.js instance pool with metrics",
   "main": "src/index.js",
   "scripts": {
