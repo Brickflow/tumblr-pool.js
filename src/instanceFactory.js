@@ -6,11 +6,6 @@ var roughSizeOfObject = require('./roughSizeOfObject')
 var tumblr = require('tumblr.js');
 tumblr.request(require('./requestWrapper'));
 
-var mainResponseArrayFields = {
-  posts: ['posts', 'tagged', 'dashboard'],
-  users: ['followers'],
-  liked_posts: ['liked_posts']
-}
 function responseArrayByCommand(cmd) {
   return _.findKey({
     posts: ['posts', 'tagged', 'dashboard'],
@@ -52,11 +47,15 @@ module.exports = function instanceFactory(params) {
             tumblrToken: self.token,
             ip: self.ip,
             queryType: cmd,
-            queryParams: args.slice(0, -1), // w/o the callback
+            // queryParams: args.slice(0, -1), // w/o the callback
             queryAt: queryAt,
             responseAt: responseAt,
             queryDuration: responseAt - queryAt, // millisec
           };
+          
+          _.each(args.slice(0, -1), function(val, idx) {
+            res.logInfo['queryParams' + idx] = val;
+          });
           
           var responseArrayKey = responseArrayByCommand(cmd);
           if (responseArrayKey) {
