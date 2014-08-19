@@ -6,7 +6,7 @@ var instanceFactory = require('./instanceFactory');
 var loggerEventName = 'tumblr-query';
 var request = require('request');
 
-var tumblrPoolFactory = function tumblrPoolFactory(firstClientParams) {
+function tumblrPoolFactory(firstClientParams) {
   firstClientParams = firstClientParams || {}; 
   if (firstClientParams.loggerEventName) {
     loggerEventName = firstClientParams.loggerEventName;
