@@ -36,7 +36,7 @@ module.exports = function instanceFactory(params) {
       var queryCount = self.queryCount;
       
       args.push(
-        function instanceResponseCallback(err, res) {
+        function instanceResponseCallback(err, res, requestResponse) {
           var responseAt = new Date();
           
           res = res || {};
@@ -50,14 +50,12 @@ module.exports = function instanceFactory(params) {
             queryParams: args.slice(0, -1), // w/o the callback
             queryAt: queryAt,
             responseAt: responseAt,
-            queryDuration: responseAt - queryAt, // millisec
+            queryDuration: responseAt - queryAt // millisec
           };
           
-          /*
-          _.each(args.slice(0, -1), function(val, idx) {
-            res.logInfo['queryParams' + idx] = val;
-          });
-          */
+          if (requestResponse && requestResponse.headers) {
+            res.logInfo.headers = requestResponse.headers
+          }
           
           var responseArrayKey = responseArrayByCommand(cmd);
           if (responseArrayKey) {
@@ -73,9 +71,17 @@ module.exports = function instanceFactory(params) {
               stack: err.stack,
               code: err.code
             });
+            if (responseHandler && responseHandler.body) {
+              raw: responseHandler.body
+            }
+          } else if (res.error) {
+            res.logInfo.err = res.error;
+            if (responseHandler && responseHandler.body) {
+              res.logInfo.raw = responseHandler.body
+            }
           }
           
-          
+
           return callback(err, res);
         });
       

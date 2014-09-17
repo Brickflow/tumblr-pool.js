@@ -53,9 +53,9 @@ function tumblrPoolFactory(firstClientParams) {
       args.push(function instanceCallbackWrapper(err, res) {
         if (self.logger) {
           if (err || res.logInfo.status !== 'success') {
-            self.logger.info(loggerEventName, res.logInfo); 
-          } else {
             self.logger.error(loggerEventName, res.logInfo);
+          } else {
+            self.logger.info(loggerEventName, res.logInfo);
           }
         }
         cb(err, res);
