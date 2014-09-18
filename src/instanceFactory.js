@@ -1,7 +1,7 @@
 /* jshint camelcase: false */
 'use strict';
 var _ = require('lodash');
-var roughSizeOfObject = require('./roughSizeOfObject')
+var roughSizeOfObject = require('./roughSizeOfObject');
 
 var tumblr = require('tumblr.js');
 tumblr.request(require('./requestWrapper'));
@@ -71,13 +71,13 @@ module.exports = function instanceFactory(params) {
               stack: err.stack,
               code: err.code
             });
-            if (responseHandler && responseHandler.body) {
-              raw: responseHandler.body
+            if (requestResponse && requestResponse.body) {
+              res.logInfo.raw = requestResponse.body
             }
           } else if (res.error) {
             res.logInfo.err = res.error;
-            if (responseHandler && responseHandler.body) {
-              res.logInfo.raw = responseHandler.body
+            if (requestResponse && requestResponse.body) {
+              res.logInfo.raw = requestResponse.body
             }
           }
           
