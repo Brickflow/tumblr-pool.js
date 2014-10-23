@@ -17,7 +17,7 @@ var t = tumblr.createClient({
     info: function() { ... },
     error: function() { ... } 
   },
-  loggerEventName: 'tumblr-query,
+  loggerEventName: 'tumblr-query',
   ip: 1.2.3.4 // optional: local IP (request.js localAddress)
 });
 
