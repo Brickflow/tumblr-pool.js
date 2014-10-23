@@ -5,6 +5,7 @@ tumblr-pool.js is a tumblr.js wrapper, which can be used with multiple consumer_
 
 ### Usage
 
+```javascript
 // Create a client as usual, with some extra parameters you may want
 var t = tumblr.createClient({
   consumer_key: '...',
@@ -28,3 +29,4 @@ t.addClient({
 });
 
 t.posts('blogName', function(err, res) {});
+```
